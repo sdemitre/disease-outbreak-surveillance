@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Disease Outbreak Surveillance Network</title>
+    
+    <!-- External Libraries -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-globe-americas"></i>
+                    <h1>GDOSN</h1>
+                    <span>Global Disease Outbreak Surveillance Network</span>
+                </div>
+                <nav class="main-nav">
+                    <button class="nav-btn active" data-section="dashboard">
+                        <i class="fas fa-chart-line"></i> Dashboard
+                    </button>
+                    <button class="nav-btn" data-section="outbreak-map">
+                        <i class="fas fa-map-marked-alt"></i> Outbreak Map
+                    </button>
+                    <button class="nav-btn" data-section="data-repository">
+                        <i class="fas fa-database"></i> Data Repository
+                    </button>
+                    <button class="nav-btn" data-section="submit-data">
+                        <i class="fas fa-plus-circle"></i> Submit Data
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="content-section active">
+            <div class="container">
+                <div class="section-header">
+                    <h2><i class="fas fa-chart-line"></i> Real-Time Dashboard</h2>
+                    <p>Live surveillance of infectious disease outbreaks worldwide</p>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="active-outbreaks">23</h3>
+                            <p>Active Outbreaks</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="countries-affected">45</h3>
+                            <p>Countries Affected</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-cases">124,567</h3>
+                            <p>Total Cases</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-microscope"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="research-studies">89</h3>
+                            <p>Research Studies</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-charts">
+                    <div class="chart-container">
+                        <h3>Outbreak Trends (Last 30 Days)</h3>
+                        <canvas id="outbreak-trends-chart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Disease Distribution</h3>
+                        <canvas id="disease-distribution-chart"></canvas>
+                    </div>
+                </div>
+
+                <div class="recent-outbreaks">
+                    <h3>Recent Outbreak Alerts</h3>
+                    <div id="recent-alerts" class="alerts-container">
+                        <!-- Dynamic content populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Outbreak Map Section -->
+        <section id="outbreak-map" class="content-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2><i class="fas fa-map-marked-alt"></i> Interactive Outbreak Map</h2>
+                    <p>Hover over regions to view current infectious disease outbreaks</p>
+                </div>
+                
+                <div class="map-controls">
+                    <div class="filter-group">
+                        <label>Filter by Disease Type:</label>
+                        <select id="disease-filter">
+                            <option value="all">All Diseases</option>
+                            <option value="viral">Viral</option>
+                            <option value="bacterial">Bacterial</option>
+                            <option value="parasitic">Parasitic</option>
+                            <option value="fungal">Fungal</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Severity Level:</label>
+                        <select id="severity-filter">
+                            <option value="all">All Levels</option>
+                            <option value="high">High</option>
+                            <option value="medium">Medium</option>
+                            <option value="low">Low</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="map" class="outbreak-map"></div>
+                
+                <div class="map-legend">
+                    <h4>Outbreak Severity</h4>
+                    <div class="legend-item">
+                        <div class="legend-color high-severity"></div>
+                        <span>High Risk</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color medium-severity"></div>
+                        <span>Medium Risk</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color low-severity"></div>
+                        <span>Low Risk</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Data Repository Section -->
+        <section id="data-repository" class="content-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2><i class="fas fa-database"></i> Research Data Repository</h2>
+                    <p>Access and filter research data by demographics, location, and study type</p>
+                </div>
+
+                <div class="repository-filters">
+                    <div class="filter-row">
+                        <div class="filter-group">
+                            <label>Data Type:</label>
+                            <select id="data-type-filter">
+                                <option value="all">All Types</option>
+                                <option value="quantitative">Quantitative</option>
+                                <option value="qualitative">Qualitative</option>
+                                <option value="mixed">Mixed Methods</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Region:</label>
+                            <select id="region-filter">
+                                <option value="all">All Regions</option>
+                                <option value="north-america">North America</option>
+                                <option value="south-america">South America</option>
+                                <option value="europe">Europe</option>
+                                <option value="africa">Africa</option>
+                                <option value="asia">Asia</option>
+                                <option value="oceania">Oceania</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Age Group:</label>
+                            <select id="age-filter">
+                                <option value="all">All Ages</option>
+                                <option value="0-18">0-18 years</option>
+                                <option value="19-35">19-35 years</option>
+                                <option value="36-65">36-65 years</option>
+                                <option value="65+">65+ years</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Search:</label>
+                            <input type="text" id="search-input" placeholder="Search studies...">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="data-table-container">
+                    <table id="research-data-table" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Study Title</th>
+                                <th>Type</th>
+                                <th>Location</th>
+                                <th>Demographics</th>
+                                <th>Sample Size</th>
+                                <th>Status</th>
+                                <th>Last Updated</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="research-table-body">
+                            <!-- Dynamic content populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Submit Data Section -->
+        <section id="submit-data" class="content-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2><i class="fas fa-plus-circle"></i> Submit Outbreak Data</h2>
+                    <p>Field researchers: Submit real-time outbreak information</p>
+                </div>
+
+                <div class="submission-form-container">
+                    <form id="outbreak-submission-form" class="submission-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="researcher-name">Researcher Name *</label>
+                                <input type="text" id="researcher-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="institution">Institution/Organization</label>
+                                <input type="text" id="institution">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="disease-name">Disease/Pathogen *</label>
+                                <input type="text" id="disease-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="disease-type">Disease Type *</label>
+                                <select id="disease-type" required>
+                                    <option value="">Select Type</option>
+                                    <option value="viral">Viral</option>
+                                    <option value="bacterial">Bacterial</option>
+                                    <option value="parasitic">Parasitic</option>
+                                    <option value="fungal">Fungal</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="location-country">Country *</label>
+                                <input type="text" id="location-country" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="location-region">State/Region</label>
+                                <input type="text" id="location-region">
+                            </div>
+                            <div class="form-group">
+                                <label for="location-city">City</label>
+                                <input type="text" id="location-city">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="cases-confirmed">Confirmed Cases</label>
+                                <input type="number" id="cases-confirmed" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="cases-suspected">Suspected Cases</label>
+                                <input type="number" id="cases-suspected" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="deaths">Deaths</label>
+                                <input type="number" id="deaths" min="0">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="severity-level">Severity Level *</label>
+                                <select id="severity-level" required>
+                                    <option value="">Select Severity</option>
+                                    <option value="low">Low</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="high">High</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="transmission-mode">Transmission Mode</label>
+                                <select id="transmission-mode">
+                                    <option value="">Select Mode</option>
+                                    <option value="airborne">Airborne</option>
+                                    <option value="contact">Direct Contact</option>
+                                    <option value="vector-borne">Vector-borne</option>
+                                    <option value="waterborne">Waterborne</option>
+                                    <option value="foodborne">Foodborne</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="description">Additional Information</label>
+                            <textarea id="description" rows="4" placeholder="Describe the outbreak situation, control measures, etc."></textarea>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="submit-btn">
+                                <i class="fas fa-paper-plane"></i> Submit Outbreak Report
+                            </button>
+                            <button type="reset" class="reset-btn">
+                                <i class="fas fa-undo"></i> Reset Form
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>GDOSN</h4>
+                    <p>Real-time surveillance for global health security</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>Email: info@gdosn.org</p>
+                    <p>Phone: +1 (555) 123-4567</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <p>API Documentation</p>
+                    <p>Research Guidelines</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
