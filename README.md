@@ -58,12 +58,30 @@ A comprehensive web platform for public health researchers to access real-time i
 
 ## Sample Data
 
-The platform includes comprehensive mock data:
-- **8 Active Outbreaks** across different continents
-- **8 Research Studies** with various methodologies
-- **Real-world Disease Examples**: H5N1 Influenza, Dengue, Cholera, Mpox, Malaria, Marburg Virus, Yellow Fever, Typhoid
-- **Geographic Coverage**: Asia, Africa, South America, with specific cities and coordinates
-- **Severity Levels**: High-risk (red), Medium-risk (orange), Low-risk (green)
+The platform includes **58 comprehensive outbreak entries** with diverse global coverage:
+
+### 📊 **Outbreak Dataset Statistics:**
+- **🔴 High Severity**: 28 outbreaks (48.3%) - Critical diseases with high mortality rates
+- **🟡 Medium Severity**: 18 outbreaks (31.0%) - Moderate impact requiring medical intervention
+- **🟢 Low Severity**: 12 outbreaks (20.7%) - Mild conditions with minimal mortality
+
+### 🌍 **Global Geographic Coverage:**
+- **Asia**: 15+ countries including India, China, Japan, Thailand, Philippines, Malaysia
+- **Africa**: 12+ countries including Nigeria, Kenya, South Africa, Uganda, Madagascar
+- **Europe**: 10+ countries including Germany, France, Italy, Spain, United Kingdom
+- **Americas**: 8+ countries including United States, Brazil, Mexico, Canada, Chile
+- **Middle East**: Saudi Arabia, Turkey, Iran with regional disease patterns
+- **Oceania**: Australia, New Zealand representing Pacific region outbreaks
+
+### 🦠 **Disease Categories:**
+- **Viral Diseases**: Ebola, MERS-CoV, Nipah, Hantavirus, Dengue, Zika, West Nile
+- **Bacterial Infections**: Cholera, Plague, Anthrax, Meningitis, Typhoid, Brucellosis  
+- **Parasitic Diseases**: Malaria, Leishmaniasis, Scabies, Pinworms
+- **Fungal Infections**: Ringworm, Athlete's Foot, Thrush
+- **Vector-borne Diseases**: Multiple mosquito, tick, and flea-transmitted pathogens
+- **Zoonotic Outbreaks**: Animal-to-human transmission scenarios
+
+### 🏥 **Research Studies**: 8 comprehensive studies with various methodologies
 
 ## Usage Instructions
 
