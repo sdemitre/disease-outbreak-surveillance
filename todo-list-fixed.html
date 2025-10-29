@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Todo List - Fixed Version</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        li {
+            padding: 10px;
+            margin-bottom: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-left: 4px solid transparent;
+        }
+        .high {
+            color: #d32f2f;
+            font-weight: bold;
+            border-left-color: #d32f2f;
+        }
+        .medium {
+            color: #f57c00;
+            font-weight: bold;
+            border-left-color: #f57c00;
+        }
+        .low {
+            color: #388e3c;
+            font-weight: bold;
+            border-left-color: #388e3c;
+        }
+        h1 {
+            color: black; /* Fixed typo: was 'blak' */
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .input-section {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        input, select, button {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        #todo-input {
+            flex: 2;
+            min-width: 200px;
+        }
+        #category {
+            flex: 1;
+            min-width: 120px;
+        }
+        button {
+            background-color: #1976d2;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #1565c0;
+        }
+        .checkbox {
+            margin-right: 8px;
+        }
+        .completed {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+        .todo-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .delete-btn {
+            background-color: #d32f2f;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .delete-btn:hover {
+            background-color: #c62828;
+        }
+        .stats {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>My Todo List</h1>
+
+        <div class="input-section">
+            <input type="text" id="todo-input" placeholder="Enter new todo">
+            <select id="priority">
+                <option value="high">High Priority</option>
+                <option value="medium" selected>Medium Priority</option>
+                <option value="low">Low Priority</option>
+            </select>
+            <input type="text" id="category" placeholder="Category (optional)">
+            <button type="button" onclick="addTodo()">Add Todo</button>
+        </div>
+
+        <ul id="todo-list">
+            <li class="high">
+                <div class="todo-item">
+                    <span><input type="checkbox" class="checkbox" onchange="toggleComplete(this)"> Buy groceries (Shopping)</span>
+                    <button class="delete-btn" onclick="removeTodo(this)">Delete</button>
+                </div>
+            </li>
+            <li class="medium">
+                <div class="todo-item">
+                    <span><input type="checkbox" class="checkbox" onchange="toggleComplete(this)"> Walk the dog (Chores)</span>
+                    <button class="delete-btn" onclick="removeTodo(this)">Delete</button>
+                </div>
+            </li>
+            <li class="low">
+                <div class="todo-item">
+                    <span><input type="checkbox" class="checkbox" onchange="toggleComplete(this)"> Read a book (Leisure)</span>
+                    <button class="delete-btn" onclick="removeTodo(this)">Delete</button>
+                </div>
+            </li>
+        </ul>
+
+        <div class="stats" id="stats">
+            <strong>Total: <span id="total-count">3</span> | Completed: <span id="completed-count">0</span></strong>
+        </div>
+    </div>
+
+    <script>
+        function addTodo() {
+            const input = document.getElementById("todo-input");
+            const newTodo = input.value.trim();
+            const list = document.getElementById("todo-list");
+            const priority = document.getElementById("priority").value;
+            const category = document.getElementById("category").value.trim();
+
+            if (newTodo === "") {
+                alert("Please enter a todo!");
+                return;
+            }
+
+            const li = document.createElement("li");
+            
+            // Fixed: Use the selected priority instead of hardcoded "medium"
+            li.className = priority;
+
+            // Create todo item structure
+            const todoItemDiv = document.createElement("div");
+            todoItemDiv.className = "todo-item";
+            
+            const todoSpan = document.createElement("span");
+            const categoryText = category ? ` (${category})` : "";
+            todoSpan.innerHTML = `<input type="checkbox" class="checkbox" onchange="toggleComplete(this)"> ${newTodo}${categoryText}`;
+            
+            const deleteBtn = document.createElement("button");
+            deleteBtn.className = "delete-btn";
+            deleteBtn.textContent = "Delete";
+            deleteBtn.onclick = function() { removeTodo(this); };
+            
+            todoItemDiv.appendChild(todoSpan);
+            todoItemDiv.appendChild(deleteBtn);
+            li.appendChild(todoItemDiv);
+
+            list.appendChild(li);
+
+            // Fixed: Use assignment (=) instead of comparison (==)
+            input.value = "";
+            document.getElementById("category").value = "";
+            
+            updateStats();
+        }
+
+        function removeTodo(deleteButton) {
+            const li = deleteButton.closest('li');
+            const list = document.getElementById("todo-list");
+            list.removeChild(li);
+            updateStats();
+        }
+
+        function toggleComplete(checkbox) {
+            const todoSpan = checkbox.parentElement;
+            if (checkbox.checked) {
+                todoSpan.classList.add('completed');
+            } else {
+                todoSpan.classList.remove('completed');
+            }
+            updateStats();
+        }
+
+        function updateStats() {
+            const totalItems = document.querySelectorAll("#todo-list li").length;
+            const completedItems = document.querySelectorAll("#todo-list .completed").length;
+            
+            document.getElementById("total-count").textContent = totalItems;
+            document.getElementById("completed-count").textContent = completedItems;
+        }
+
+        // Fixed: Proper event delegation for dynamically added items
+        document.addEventListener('DOMContentLoaded', function() {
+            const todoList = document.getElementById("todo-list");
+            
+            // Add hover effects with event delegation
+            todoList.addEventListener('mouseover', function(event) {
+                if (event.target.tagName === 'LI') {
+                    event.target.style.backgroundColor = "#fff3cd";
+                }
+            });
+            
+            todoList.addEventListener('mouseleave', function(event) {
+                if (event.target.tagName === 'LI') {
+                    // Fixed: Use assignment (=) instead of comparison (==)
+                    event.target.style.backgroundColor = "white";
+                }
+            });
+        });
+
+        // Allow Enter key to add todo
+        document.getElementById("todo-input").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                addTodo();
+            }
+        });
+
+        // Initialize stats on page load
+        updateStats();
+    </script>
+</body>
+</html>

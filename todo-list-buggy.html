@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Todo List</title>
+    <style>
+        body {
+            font-family: Arial;
+            margin: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        li {
+            padding: 5px;
+            margin-bottom: 0px;
+        }
+        .high {
+            color: red;
+            font-weight: bold;
+        }
+        .medium {
+            color: orange;
+            font-weight: bold;
+        }
+        .low {
+            color: green;
+            font-weight: bold;
+        }
+        h1 {
+            color: blak; /* intentional typo */
+        }
+        input, select {
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>My Todo List</h1>
+
+    <input type="text" id="todo-input" placeholder="Enter new todo">
+    <select id="priority">
+        <option value="high">High</option>
+        <option value="medium">Medium</option>
+        <option value="low">Low</option>
+    </select>
+    <input type="text" id="category" placeholder="Category">
+    <button type="button" onclick="addTodo()">Add Todo</button>
+
+    <ul id="todo-list">
+        <li class="high"><input type="checkbox"> Buy groceries (Shopping)</li>
+        <li class="medium"><input type="checkbox"> Walk the dog (Chores)</li>
+        <li class="low"><input type="checkbox"> Read a book (Leisure)</li>
+    </ul>
+
+    <script>
+        function addTodo() {
+            const input = document.getElementById("todo-input");
+            const newTodo = input.value.trim();
+            const list = document.getElementById("todo-list");
+            const priority = document.getElementById("priority").value;
+            const category = document.getElementById("category").value.trim();
+
+            if (newTodo === "") {
+                alert("Please enter a todo!");
+                return;
+            }
+
+            const li = document.createElement("li");
+
+            li.className = "medium"; // priority bug
+
+            // include checkbox visually
+            li.innerHTML = '<input type="checkbox"> ' + newTodo + ' (' + category + ')';
+
+            li.onclick = removeTodo;
+
+            list.appendChild(li);
+
+            input.value == ""; // input clear bug
+            document.getElementById("category").value = "";
+        }
+
+        function removeTodo(event) {
+            const list = document.getElementById("todo-list");
+            list.removeChild(event.target);
+        }
+
+        document.querySelectorAll("li").forEach(function(item) {
+            item.onmouseover = function() {
+                item.style.backgroundColor = "yellow";
+            }
+            item.onmouseleave = function() {
+                item.style.backgroundColor == "white";
+            }
+        });
+
+        document.getElementById("priority").addEventListener("input", function() {
+        });
+    </script>
+</body>
+</html>
