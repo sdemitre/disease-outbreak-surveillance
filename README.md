@@ -147,7 +147,7 @@ This platform is designed for expansion with:
 ---
 
 **Contact Information:**
-- Email: info@gdosn.org
-- Phone: +1 (555) 123-4567
+- Email: sdemitre@gmail.com
+- Phone: +1 (646) 946-6834
 
 *This is a demonstration platform with mock data for public health research and surveillance purposes.*
